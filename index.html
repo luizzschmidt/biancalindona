@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bianca Linda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 30px 20px 140px;
+      background: #1a1919;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Tela inicial simples, sem brilho */
+    #tela-inicial h2 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #ff4d6d;
+      user-select: none;
+      /* sem animação ou brilho */
+    }
+
+    #tela-inicial {
+      text-align: center;
+      margin-top: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 12px 26px;
+      border: none;
+      background-color: #ff4d6d;
+      color: #f7cdcd;
+      font-weight: 600;
+      border-radius: 8px;
+      font-size: 1.3rem;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      box-shadow: none; /* tirado o brilho */
+    }
+
+    button:hover {
+      background-color: #ff81a8;
+      /* sem sombra nem brilho */
+      transform: none;
+    }
+
+    #btn-voltar {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ff4d6d;
+      color: #f7cdcd;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+      z-index: 200;
+      box-shadow: none; /* sem brilho */
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    #btn-voltar:hover {
+      background-color: #ff81a8;
+      transform: none;
+      box-shadow: none;
+    }
+
+    #imagem-opcao {
+      max-width: 160px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: none; /* sem brilho */
+      user-select: none;
+    }
+
+    #imagem-opcao:hover {
+      transform: scale(1.05);
+      box-shadow: none;
+    }
+
+    #conteudo-site {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none;
+      position: relative;
+      min-height: 600px;
+    }
+
+    #conteudo-site.mostrar {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    #introducao {
+      position: relative;
+      max-width: 700px;
+      margin: 30px auto 60px auto;
+      background: #f8d3d3;
+      padding: 35px 40px;
+      border-radius: 25px;
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      color: #2e2d2d;
+      box-shadow: none; /* retirado brilho */
+      user-select: none;
+    }
+
+    .galeria {
+      flex: 0 0 320px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      max-width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 20px;
+    }
+
+    .galeria img {
+      width: 100%;
+      border-radius: 8px;
+      opacity: 1;
+      transition: opacity 1.5s ease, transform 0.6s ease;
+      box-shadow: none; /* sem brilho */
+      user-select: none;
+    }
+
+    .galeria img:hover {
+      transform: scale(1.02);
+      box-shadow: none;
+    }
+
+    .conteudo-balao {
+      display: flex;
+      gap: 15px;
+      background: #fff;
+      color: #222;
+      padding: 50px;
+      border-radius: 25px;
+      max-width: 860px;
+      margin: 0 auto 60px auto;
+      min-height: 320px;
+      align-items: flex-start;
+      box-shadow: none;
+      user-select: none;
+    }
+
+    .texto {
+      flex: 1 1 auto;
+      font-size: 1.2rem;
+      overflow-wrap: break-word;
+      max-width: 480px;
+    }
+
+    .imagem-canto {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 80px;
+      z-index: 100;
+      border-radius: 8px;
+      box-shadow: none;
+      user-select: none;
+      animation: none; /* retirado animação */
+    }
+
+    .balao-fala {
+      position: fixed;
+      bottom: 120px;
+      right: 100px;
+      background: #fff;
+      color: #333;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      box-shadow: none;
+      max-width: 250px;
+      user-select: none;
+      animation: none;
+    }
+
+    #mensagem-queima {
+      margin-top: 40px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #555;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+
+    #palavra-queima {
+      color: #444;
+      transition: color 0.4s ease;
+    }
+
+    #isqueiro {
+      cursor: grab;
+      user-select: none;
+      font-size: 1.6rem;
+      vertical-align: middle;
+      transition: filter 0.3s ease;
+      position: relative;
+      top: 4px;
+    }
+
+    #isqueiro:hover {
+      animation: none;
+      filter: none;
+    }
+
+    #quiz-form, #match-form {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #2a2a2a;
+      padding: 30px;
+      border-radius: 20px;
+      color: #fff;
+      user-select: none;
+      box-shadow: none;
+    }
+
+    #quiz-form p, #match-form p {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ff81a8;
+    }
+
+    #quiz-form label, #match-form label {
+      display: block;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    #quiz-form input[type="radio"],
+    #match-form input[type="text"] {
+      margin-right: 10px;
+      font-size: 1.1rem;
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      width: 100%;
+      color: #333;
+    }
+
+    #resultado-quiz, #resultado-match {
+      max-width: 700px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ff4d6d;
+      border-radius: 15px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: none;
+      text-align: center;
+      user-select: none;
+      box-shadow: none;
+    }
+
+    #jogo-menu {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    #jogo-menu button {
+      margin: 10px;
+      padding: 14px 32px;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      background-color: #ff4d6d;
+      border: none;
+      color: #f7cdcd;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      box-shadow: none;
+    }
+
+    #jogo-menu button:hover {
+      background-color: #ff81a8;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Página música simplificada */
+    #pagina-musica {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #2a2a2a;
+      padding: 30px;
+      border-radius: 20px;
+      color: #fff;
+      text-align: center;
+      user-select: none;
+      box-shadow: none;
+    }
+
+    #pagina-musica h2 {
+      color: #ff4d6d;
+      margin-bottom: 20px;
+    }
+
+    #pagina-musica img {
+      max-width: 250px;
+      border-radius: 15px;
+      box-shadow: none;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease;
+    }
+
+    #pagina-musica img:hover {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+<script>
+  window.onload = () => window.scrollTo(0, 0);
+
+  let intervaloImagens = null;
+
+  function entrarSite() {
+    document.getElementById("tela-inicial").style.display = "none";
+    document.getElementById("tela-opcoes").style.display = "block";
+  }
+
+  function voltarTelaInicial() {
+    const conteudo = document.getElementById("conteudo-site");
+    conteudo.classList.remove("mostrar");
+    setTimeout(() => {
+      conteudo.style.display = "none";
+      conteudo.innerHTML = "";
+      document.getElementById("btn-voltar").style.display = "none";
+      document.getElementById("tela-opcoes").style.display = "block";
+      document.getElementById("imagem-direita").style.display = "block";
+      document.getElementById("fala").style.display = "block";
+
+      if (intervaloImagens) {
+        clearInterval(intervaloImagens);
+        intervaloImagens = null;
+      }
+    }, 400);
+  }
+
+  function abrirPagina(pagina) {
+    document.getElementById("tela-opcoes").style.display = "none";
+    document.getElementById("btn-voltar").style.display = "block";
+    const conteudo = document.getElementById("conteudo-site");
+
+    if (intervaloImagens) {
+      clearInterval(intervaloImagens);
+      intervaloImagens = null;
+    }
+
+    if (pagina === 'jogo') {
+      conteudo.innerHTML = `
+        <div id="jogo-menu">
+          <h1 style="color:#ff4d6d;">opções</h1>
+          <button onclick="mostrarQuiz()">Quiz</button>
+          <button onclick="mostrarMatch()">Match</button>
+        </div>
+        <div id="area-quiz-match" style="margin-top:40px;"></div>
+      `;
+      conteudo.style.display = "block";
+      setTimeout(() => conteudo.classList.add("mostrar"), 50);
+      document.getElementById("imagem-direita").style.display = "none";
+      document.getElementById("fala").style.display = "none";
+    }
+
+    if (pagina === 'declaracao') {
+      conteudo.innerHTML = `
+        <section id="introducao">
+          <div class="hearts">
+            <span class="heart-emoji">❤️</span>
+            <span class="heart-emoji">💖</span>
+            <span class="heart-emoji">💕</span>
+            <span class="heart-emoji">💘</span>
+          </div>
+          com um pouco de amor, luiz.
+        </section>
+
+     <section class="conteudo-balao" style="border: 10px solid white;">
+  <div class="texto">
+    <p>Bianca, que Deus te abençoe da mesma forma maravilhosa com que me abençoou no dia em que te conheci.
+Às vezes, quando faço alguma piada que claramente passa dos limites, é só uma tentativa boba de enganar meu próprio coração de fingir que eu não sou completamente maluquinho por você.
+É uma confusão de sentimentos que simplesmente não cabem num site simples como esse. Mas eu sei, com toda certeza, que um dia vou conseguir expressar tudo o que sinto, e de algum jeito, te retribuir por tudo o que você faz por mim.
+pode ter certeza, com a fé com que oro por você (e por nós) todos os dias, nada neste mundo vai tirar o meu desejo de te ter ao meu lado.
+
+Muak com Deus gatona.</p>
+  </div>
+  <div class="galeria" id="container-imagens">
+  <img src="imgretiro.jfif" alt="Foto 1">
+  <img src="img2.jfif" alt="Foto 2">
+  <img src="crianca.jpeg" alt="Foto 3">
+  <img src="crianca3.jfif" alt="Foto 4">
+  <img src="crianca2.jfif" alt="Foto 5">
+  <img src="familia.jfif" alt="Foto 6">
+</div>
+</section>
+
+<div id="mensagem-queima">
+  meu coração <span id="palavra-queima">queima</span> por você
+  <span id="isqueiro" title="Passe o mouse aqui para acender">🔥</span>
+</div>
+      `;
+
+      conteudo.style.display = "block";
+      setTimeout(() => conteudo.classList.add("mostrar"), 50);
+      document.getElementById("imagem-direita").style.display = "block";
+      document.getElementById("fala").style.display = "block";
+
+      const isqueiro = document.getElementById("isqueiro");
+      const palavraQueima = document.getElementById("palavra-queima");
+
+      isqueiro.onmouseenter = () => {
+        palavraQueima.style.color = "#ff4d6d";
+        palavraQueima.style.textShadow = "none";
+      };
+
+      isqueiro.onmouseleave = () => {
+        palavraQueima.style.color = "#444";
+        palavraQueima.style.textShadow = "none";
+      };
+    }
+
+    if (pagina === 'musica') {
+  // Exibe imagem do QR code
+  conteudo.innerHTML = `
+    <section id="pagina-musica">
+      <h2>Spotify</h2>
+      <p></p>
+      <img src="qrcode.png" alt="QR Code da música" />
+    </section>
+  `;
+  conteudo.style.display = "block";
+  setTimeout(() => conteudo.classList.add("mostrar"), 50);
+  document.getElementById("imagem-direita").style.display = "none";
+  document.getElementById("fala").style.display = "none";
+}
+  }
+
+  function mostrarQuiz() {
+    const area = document.getElementById('area-quiz-match');
+    area.innerHTML = `
+      <form id="quiz-form">
+        <div class="pergunta">
+          <p>1 - pq a cabeça da bianca é tão grande?</p>
+          <label><input type="radio" name="q1" value="a" required> de tanto pensar no luiz.</label>
+          <label><input type="radio" name="q1" value="b"> pq ela é inteligente.</label>
+          <label><input type="radio" name="q1" value="c"> pq ela caiu do colo do medico no parto.</label>
+          <label><input type="radio" name="q1" value="d"> nenhuma das alternativas.</label>
+        </div>
+        <div class="pergunta">
+          <p>2 - de onde a bianca herdou tanta beleza?</p>
+          <label><input type="radio" name="q2" value="a" required> da mae linda e maravilhosa que ela tem.</label>
+          <label><input type="radio" name="q2" value="b"> nao sabemos, ela é adotada.</label>
+          <label><input type="radio" name="q2" value="c"> alternativa "A", pq a mãe dela é linda mesmo.</label>
+          <label><input type="radio" name="q2" value="d"> ela não é bonita.</label>
+        </div>
+        <div class="pergunta">
+          <p>3 - qual o maior ponto forte da Bianca?</p>
+          <label><input type="radio" name="q3" value="a" required> seu lindo jeitinho 😘 </label>
+          <label><input type="radio" name="q3" value="b"> inteligencia</label>
+          <label><input type="radio" name="q3" value="c"> ela não tem ponto forte.</label>
+          <label><input type="radio" name="q3" value="d"> manipulação.</label>
+        </div>
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="resultado-quiz"></div>
+    `;
+
+    document.getElementById('quiz-form').onsubmit = function(e) {
+      e.preventDefault();
+      const respostas = {
+        q1: this.q1.value,
+        q2: this.q2.value,
+        q3: this.q3.value,
+      };
+      let pontos = 0;
+      if (respostas.q1 === 'a') pontos++;
+      if (respostas.q2 === 'a') pontos++;
+      if (respostas.q3 === 'a') pontos++;
+      const resultado = document.getElementById('resultado-quiz');
+      resultado.style.display = 'block';
+      resultado.textContent = `Você acertou ${pontos} de 3 perguntas.`;
+    };
+  }
+
+  function mostrarMatch() {
+    const area = document.getElementById('area-quiz-match');
+    area.innerHTML = `
+      <form id="match-form">
+        <p>escreva o nome do seu amorzinho 🥰</p>
+        <input type="text" id="nomeMatch" placeholder="Seu nome" required />
+        <button type="submit">Verificar Match</button>
+      </form>
+      <div id="resultado-match"></div>
+    `;
+
+    document.getElementById('match-form').onsubmit = function(e) {
+      e.preventDefault();
+      const nome = document.getElementById('nomeMatch').value.trim().toLowerCase();
+      const resultado = document.getElementById('resultado-match');
+      resultado.style.display = 'block';
+      if (nome === 'luiz') {
+        resultado.textContent = "Compatibilidade: 100%! a gente combina (de acordo com o jogo) obs: 100% seguro. 0 manipulação";
+      } else {
+        resultado.textContent = "Compatibilidade: 0%. quem é esse bianca?";
+      }
+    };
+  }
+</script>
+
+<!-- Estrutura fixa -->
+<div id="tela-inicial">
+  <h2></h2>
+  <button onclick="entrarSite()">❤️</button>
+  <img id="imagem-opcao" src="flor.jfif" alt="Imagem Opção" />
+</div>
+
+<div id="tela-opcoes" style="display:none; text-align:center; margin-top: 120px;">
+  <h2>Escolha uma opção</h2>
+  <button onclick="abrirPagina('jogo')">jogos </button>
+  <button onclick="abrirPagina('declaracao')">a cabeçuda da bianca</button>
+  <button onclick="abrirPagina('musica')">spotify</button>
+</div>
+
+<button id="btn-voltar" onclick="voltarTelaInicial()">Voltar</button>
+<div id="conteudo-site"></div>
+
+<div class="balao-fala" id="fala">a bianca tem cabeção</div>
+<img id="imagem-direita" src="images.jfif" alt="Imagem no canto direito" class="imagem-canto" />
+
+</body>
+</html>
